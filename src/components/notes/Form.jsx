@@ -2,9 +2,7 @@ import React from 'react'
 import { Box, TextField, ClickAwayListener } from '@mui/material'
 import { styled } from '@mui/material/styles';
 
-import { useState, useContext } from 'react';
-
-import { DataContext } from '../../context/DataProvider';
+import { useState } from 'react';
 
 const Container = styled(Box) `
     display: flex;
@@ -17,14 +15,22 @@ const Container = styled(Box) `
     margin: auto;
 `
 
-const Form = () => {
+const Form = ({ notes, setNotes, addNote }) => {
 
     const [show, setShow] = useState(false);
-
-    const { notes, setNotes } = useContext(DataContext);
+    const [note, setNote] = useState({
+        title: '',
+        tagline: '',
+        body: '',
+        isPinned: false,
+    });
 
   return (
-    <ClickAwayListener onClickAway={() => setShow(false)}>
+    <ClickAwayListener onClickAway={() => {
+        setShow(false)
+        if(note !== {})
+            addNote(note, setNote);
+    }}>
     <Container>
         {show && <>
         <TextField
@@ -32,12 +38,22 @@ const Form = () => {
             variant='standard'
             InputProps={{ disableUnderline: true }}
             style={{ width: '100%', marginBottom: '10px' }}
+            onChange={(e) => setNote({
+                ...note,
+                title: e.target.value
+            })}
+            value={note.title}
         />
         <TextField
             placeholder='Tagline'
             variant='standard'
             InputProps={{ disableUnderline: true }}
             style={{ width: '100%', marginBottom: '10px' }}
+            onChange={(e) => setNote({
+                ...note,
+                tagline: e.target.value
+            })}
+            value={note.tagline}
         /> 
         </> }
         <TextField
@@ -46,6 +62,11 @@ const Form = () => {
             variant='standard'
             InputProps={{ disableUnderline: true }}
             onClick={() => setShow(true)}
+            onChange={(e) => setNote({
+                ...note,
+                body: e.target.value
+            })}
+            value={note.body}
         />
     </Container>
     </ClickAwayListener>

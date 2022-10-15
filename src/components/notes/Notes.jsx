@@ -8,12 +8,12 @@ const DrawerHeader = styled('div')(({ theme }) => ({
     ...theme.mixins.toolbar,
   }));
 
-const Notes = ({ dbNotes }) => {
+const Notes = ({ notes, setNotes, addNote }) => {
   return (
     <Box sx={{ display: 'flex' }}>
         <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <DrawerHeader />
-        <Form />
+        <Form notes={notes} setNotes={setNotes} addNote={addNote} />
         </Box>
     </Box>
   )

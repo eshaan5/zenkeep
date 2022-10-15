@@ -4,6 +4,7 @@ import './index.css';
 import App from './App';
 
 import firebase from 'firebase/compat/app';
+import { getFirestore } from 'firebase/firestore';
 
 const firebaseConfig = {
   apiKey: "AIzaSyDgbtKdeKNGWG28p89Ifqev1joavbwp8Yo",
@@ -17,6 +18,7 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = firebase.initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -24,3 +26,5 @@ root.render(
     <App />
   </React.StrictMode>
 );
+
+export default db;
