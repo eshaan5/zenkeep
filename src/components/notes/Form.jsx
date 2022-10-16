@@ -15,7 +15,7 @@ const Container = styled(Box) `
     margin: auto;
 `
 
-const Form = ({ notes, setNotes, addNote }) => {
+const Form = ({ addNote }) => {
 
     const [show, setShow] = useState(false);
     const [note, setNote] = useState({
@@ -23,6 +23,7 @@ const Form = ({ notes, setNotes, addNote }) => {
         tagline: '',
         body: '',
         isPinned: false,
+        isDeleted: false
     });
 
   return (

@@ -1,5 +1,5 @@
 import "./App.css";
-import NavDrawer from "./components/NavDrawer";
+import Navbar from "./components/Navbar";
 import { useEffect, useState } from "react";
 
 import firebase from "firebase/compat/app";
@@ -7,7 +7,7 @@ import "firebase/compat/firestore";
 
 import Notes from "./components/notes/Notes";
 
-import { doc, setDoc } from "firebase/firestore";
+import { doc, setDoc, updateDoc, deleteDoc } from "firebase/firestore";
 import db from "./index";
 
 import { v4 as uuidv4 } from "uuid";
@@ -20,37 +20,49 @@ const addNote = async (note, setNote) => {
     body: note.body,
     isPinned: false,
   }
-  setNote({title: '', tagline: '', body: '', isPinned: false});
-  console.log(newNote);
-  const newNoteRef = await setDoc(doc(db, "notes", uuidv4()), newNote);
+  setNote({title: '', tagline: '', body: '', isPinned: false, isDeleted: false});
+  await setDoc(doc(db, "notes", uuidv4()), newNote);
   }
+};
+
+const updateNotePin = async (id, value) => {
+  const noteRef = doc(db, "notes", id);
+  await updateDoc(noteRef, { isPinned: !value });
+};
+
+async function updateNote(id, note) {
+  console.log('updating note')
+  const noteRef = doc(db, "notes", id);
+  await updateDoc(noteRef, { title: note.title, tagline: note.tagline, body: note.body });
+}
+
+const deleteNote = async (id) => {
+  const noteRef = doc(db, "notes", id);
+  await deleteDoc(noteRef);
 };
 
 const App = () => {
   const [notes, setNotes] = useState(null);
-  const [deletedNotes, setDeletedNotes] = useState([]);
-  const [selectedNoteIndex, setSelectedNoteIndex] = useState(null);
-  const [selectedNote, setSelectedNote] = useState(null);
 
   useEffect(() => {
     firebase
       .firestore()
       .collection("notes")
       .onSnapshot((serverUpdate) => {
-        const notesArray = serverUpdate.docs.map((doc) => {
+        let notesArray = serverUpdate.docs.map((doc) => {
           const data = doc.data();
           data["id"] = doc.id;
           return data;
         });
-        console.log(notesArray);
+        notesArray = notesArray.sort((a, b) => Number(b.isPinned) - Number(a.isPinned));
         setNotes(notesArray);
       }); // whenever the notes collection changes, function inside onSnapshot will be called
   }, []);
 
   return (
     <div className="App">
-      <NavDrawer />
-      <Notes notes={notes} setNotes={setNotes} addNote={addNote} />
+      <Navbar />
+      <Notes notes={notes} addNote={addNote} updateNotePin={updateNotePin} deleteNote={deleteNote} updateNote={updateNote} />
     </div>
   );
 };
