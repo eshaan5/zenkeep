@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/zenkeep/static/css/main.3f3c4787.css",
+    "main.js": "/zenkeep/static/js/main.9bc1668d.js",
+    "index.html": "/zenkeep/index.html",
+    "main.3f3c4787.css.map": "/zenkeep/static/css/main.3f3c4787.css.map",
+    "main.9bc1668d.js.map": "/zenkeep/static/js/main.9bc1668d.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.3f3c4787.css",
+    "static/js/main.9bc1668d.js"
+  ]
+}
